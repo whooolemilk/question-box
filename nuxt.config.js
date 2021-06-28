@@ -73,8 +73,10 @@ export default {
     '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    // https://google-fonts.nuxtjs.org
+    // https://pwa.nuxtjs.org/
+    '@nuxtjs/pwa',
     [
+      // https://google-fonts.nuxtjs.org
       '@nuxtjs/google-fonts',
       {
         families: {
@@ -112,5 +114,16 @@ export default {
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config, { isDev, isClient, isServer }) {
+      if (isServer) {
+        config.externals = {
+          '@firebase/app': 'commonjs @firebase/app',
+          '@firebase/firestore': 'commonjs @firebase/firestore',
+          '@firebase/auth': 'commonjs @firebase/auth',
+          '@firebase/analytics': 'commonjs @firebase/analytics',
+        }
+      }
+    },
+  },
 }
